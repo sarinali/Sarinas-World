@@ -11,7 +11,7 @@ import {
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
 
-export function Button({
+export function GlassButton({
   borderRadius = "1.75rem",
   children,
   as: Component = "button",
@@ -19,6 +19,7 @@ export function Button({
   borderClassName,
   duration,
   className,
+  moving = true,
   ...otherProps
 }: {
   borderRadius?: string;
@@ -28,6 +29,7 @@ export function Button({
   borderClassName?: string;
   duration?: number;
   className?: string;
+  moving?: boolean;
   [key: string]: any;
 }) {
   return (
@@ -45,14 +47,16 @@ export function Button({
         className="absolute inset-0"
         style={{ borderRadius: `calc(${borderRadius} * 0.96)` }}
       >
-        <MovingBorder duration={duration} rx="30%" ry="30%">
-          <div
-            className={cn(
-              "h-20 w-20 bg-[radial-gradient(#40b3ff_40%,transparent_60%)] opacity-[0.8]",
-              borderClassName,
-            )}
-          />
-        </MovingBorder>
+        {moving && (
+          <MovingBorder duration={duration} rx="30%" ry="30%">
+            <div
+              className={cn(
+                "h-20 w-20 bg-[radial-gradient(#40b3ff_40%,transparent_60%)] opacity-[0.8]",
+                borderClassName,
+              )}
+            />
+          </MovingBorder>
+        )}
       </div>
 
       <div

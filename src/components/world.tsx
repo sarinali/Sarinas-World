@@ -1,18 +1,23 @@
 "use client"
 
 import React from 'react'
-import Spline from '@splinetool/react-spline'
-import { useLoadingContext } from '@/context/world-context'
+import Waves from './Waves/Waves'
 
 export default function World() {
-    const {setWorldLoading} = useLoadingContext()
     return (
-        <div className="w-[110vw] h-[110vh] absolute top-0 left-0 overflow-hidden flex justify-center items-center">
-            <Spline 
-            scene="https://prod.spline.design/vYCVhCue8jjJ2Z-o/scene.splinecode"
-            onLoad={() => {
-                setWorldLoading(false);
-            }}
+        <div className="w-[100vw] h-[100vh] absolute top-0 left-0 overflow-hidden flex justify-center items-center">
+            <Waves
+            lineColor="#fff"
+            backgroundColor="rgba(0,0,0)"
+            waveSpeedX={0.02}
+            waveSpeedY={0.01}
+            waveAmpX={20}
+            waveAmpY={20}
+            friction={0.9}
+            tension={0.03}
+            maxCursorMove={30}
+            xGap={15}
+            yGap={36}
             />
         </div>
     )

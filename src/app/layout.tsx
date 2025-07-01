@@ -1,25 +1,26 @@
-import type { Metadata } from "next";
+'use client'
+
 import { Lexend } from "next/font/google";
+import NavbarWorld from "@/components/navbar";
 import "./globals.css";
+import { LoadingProvider } from "@/context/world-context";
 
 const lexend = Lexend({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Sarina's World 🌎",
-  description: "The world is in MY HANDS. SARINAS HANDS. 🤲🌎",
-};
-
-export default function RootLayout({
+export default function RootLayout({ 
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en" className={lexend.className}>
-      <body className="bg-gray-900 text-white">
-        {children}
+      <body className="bg-neutral-900 text-white dark">
+        <LoadingProvider>
+          <NavbarWorld />
+          {children}
+        </LoadingProvider>
       </body>
     </html>
   );

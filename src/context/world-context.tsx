@@ -8,8 +8,8 @@ const LoadingContext = createContext<{
     setReady: React.Dispatch<React.SetStateAction<boolean>>;
     setWorldLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }>({
-    worldLoading: true,
-    ready: false,
+    worldLoading: false,
+    ready: true,
     setWorldLoading: () => {},
     setReady: () => {}
 
@@ -18,8 +18,16 @@ const LoadingContext = createContext<{
 export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [worldLoading, setWorldLoading] = useState(true);
   const [ready, setReady] = useState(false);
+
+  const value = React.useMemo(() => ({
+    worldLoading,
+    setWorldLoading,
+    ready,
+    setReady
+  }), [worldLoading, ready]);
+
   return (
-    <LoadingContext.Provider value={{ worldLoading, setWorldLoading, ready, setReady }}>
+    <LoadingContext.Provider value={value}>
       {children}
     </LoadingContext.Provider>
   );

@@ -33,7 +33,7 @@ export default function CompanyBadge(props: BadgeProps) {
             {isClient ? <Link className={badgeVariants()}  replace={false} rel="noopener noreferrer" target="_blank" href={props.companyURL}>
             <Avatar className='w-4 h-auto'>
                 <AvatarImage src={props.companyImage} alt="" className='rounded-full'/>
-            </Avatar> {props.companyName}
+            </Avatar> <p className='text-white'>{props.companyName}</p>
             </Link> : null}
             </HoverCardTrigger>
             <HoverCardContent className='text-gray-400'>
