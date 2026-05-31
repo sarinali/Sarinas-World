@@ -123,7 +123,8 @@ export default function BuildPage() {
       </p>
 
     </div>
-          <div className="relative mb-12 group mt-12">
+      <div>
+          <div className="relative mb-12 group mt-12 inline-block">
             <h1 className="text-4xl font-bold leading-tight z-10 relative">
             📍 Where I build
             </h1>
@@ -160,26 +161,25 @@ export default function BuildPage() {
           </div>
       
       <Card className="inline-block">
-        <CardContent className="flex gap-x-2">
+      <CardContent className="flex flex-col gap-y-2 sm:flex-row items-center sm:gap-x-2">
         <Image
-          className="p-2 border border-neutral-800 rounded-xl"
-            src={Setup}
-            alt={"oops"}
-            width={300}
-            height={300}
-
-          />
-          <Image
-          className="p-2 border border-neutral-800 rounded-xl"
-            src={Toronto}
-            alt={"oops"}
-            width={300}
-            height={300}
-
-          />
-        </CardContent>
+          className="p-2 border border-neutral-800 rounded-xl w-full"
+          src={Setup}
+          alt={"oops"}
+          width={300}
+          height={300}
+        />
+        <Image
+          className="p-2 border border-neutral-800 rounded-xl w-full"
+          src={Toronto}
+          alt={"oops"}
+          width={300}
+          height={300}
+        />
+      </CardContent>
         <CardDescription className="px-6 pt-4">{`I'm located in the vibrant city of Toronto, ON, Canada 🇨🇦! Come say hi to me :)`}</CardDescription>
       </Card>
+      </div>
       </div>
     </main>
   );

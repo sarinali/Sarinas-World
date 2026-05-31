@@ -1,8 +1,5 @@
-import WholeWorld from "@/components/whole-world";
-
+import SimpleHome from "@/components/simple-home";
 
 export default function Home() {
-  return (
-    <WholeWorld/>
-  );
+  return <SimpleHome />;
 }

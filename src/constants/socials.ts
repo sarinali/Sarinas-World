@@ -2,7 +2,8 @@ import {
     LinkedInLogoIcon, 
     GitHubLogoIcon, 
     NotionLogoIcon, 
-    ArchiveIcon 
+    ArchiveIcon,
+    TwitterLogoIcon,
 } from "@radix-ui/react-icons"
 
 export const socials = [
@@ -10,6 +11,11 @@ export const socials = [
         icon: LinkedInLogoIcon,
         linkInfo: "LinkedIn 👀",
         linkURL: "https://www.linkedin.com/in/sarinali/"
+    },
+    {
+        icon: TwitterLogoIcon,
+        linkInfo: "Twitter/X ",
+        linkURL: "https://x.com/sarinajnli"
     },
     {
         icon: GitHubLogoIcon,
@@ -25,5 +31,5 @@ export const socials = [
         icon: ArchiveIcon,
         linkInfo: "Previous iteration of website... 🕵️‍♀️",
         linkURL: "https://www.sarinali.me/"
-    }
+    },
 ]

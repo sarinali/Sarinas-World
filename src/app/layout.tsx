@@ -1,26 +1,27 @@
-'use client'
-
-import { Lexend } from "next/font/google";
-import NavbarWorld from "@/components/navbar";
+import { Lora, Playfair_Display } from "next/font/google";
+import CursorDog from "@/components/cursor-dog";
 import "./globals.css";
-import { LoadingProvider } from "@/context/world-context";
 
-const lexend = Lexend({
+const lora = Lora({
   subsets: ["latin"],
+  variable: "--font-lora",
 });
 
-export default function RootLayout({ 
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+});
+
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={lexend.className}>
-      <body className="bg-neutral-900 text-white dark">
-        <LoadingProvider>
-          <NavbarWorld />
-          {children}
-        </LoadingProvider>
+    <html lang="en" className={`${lora.className} ${playfair.variable}`}>
+      <body className="bg-white text-gray-900">
+        <CursorDog />
+        {children}
       </body>
     </html>
   );
