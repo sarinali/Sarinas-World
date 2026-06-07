@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { companiies } from "@/constants/companies";
@@ -10,6 +10,14 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
+} from "@/components/ui/carousel";
 import PixelMosaic from "@/components/pixel-mosaic";
 
 const cities = [
@@ -21,8 +29,16 @@ const cities = [
 export default function SimpleHome() {
   const current = companiies[0];
   const past = companiies.slice(1);
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [cityIndex, setCityIndex] = useState(0);
   const city = cities[cityIndex];
+
+  useEffect(() => {
+    if (!carouselApi) return;
+    const onSelect = () => setCityIndex(carouselApi.selectedScrollSnap());
+    carouselApi.on("select", onSelect);
+    return () => { carouselApi.off("select", onSelect); };
+  }, [carouselApi]);
 
   return (
     <main className="max-w-[600px] mx-auto px-8 py-8">
@@ -80,29 +96,40 @@ export default function SimpleHome() {
           </HoverCardContent>
         </HoverCard>
 
-        <div className="overflow-hidden" style={{ aspectRatio: "3/1" }}>
-          <PixelMosaic
-            src={city.src}
-            cellSize={3}
-            gap={1}
-            radius={1}
-            renderWidth={1200}
-            renderHeight={400}
-          />
-        </div>
-
-        <div className="flex justify-end gap-1.5 mt-1.5">
-          {cities.map((c, i) => (
-            <button
-              key={c.label}
-              onClick={() => setCityIndex(i)}
-              className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                i === cityIndex ? "bg-gray-500" : "bg-gray-200 hover:bg-gray-300"
-              }`}
-              aria-label={c.label}
-            />
-          ))}
-        </div>
+        <Carousel setApi={setCarouselApi} opts={{ loop: true }} className="w-full">
+          <CarouselContent>
+            {cities.map((c) => (
+              <CarouselItem key={c.label}>
+                <div className="overflow-hidden" style={{ aspectRatio: "3/1" }}>
+                  <PixelMosaic
+                    src={c.src}
+                    cellSize={3}
+                    gap={1}
+                    radius={1}
+                    renderWidth={1200}
+                    renderHeight={400}
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <div className="flex items-center justify-end gap-2 mt-1.5">
+            <CarouselPrevious className="static translate-y-0 w-5 h-5 border-0 shadow-none text-gray-400 hover:text-gray-700 hover:bg-transparent cursor-pointer" />
+            <div className="flex gap-1.5">
+              {cities.map((c, i) => (
+                <button
+                  key={c.label}
+                  onClick={() => carouselApi?.scrollTo(i)}
+                  className={`w-1.5 h-1.5 rounded-full transition-colors cursor-pointer ${
+                    i === cityIndex ? "bg-gray-500" : "bg-gray-200 hover:bg-gray-300"
+                  }`}
+                  aria-label={c.label}
+                />
+              ))}
+            </div>
+            <CarouselNext className="static translate-y-0 w-5 h-5 border-0 shadow-none text-gray-400 hover:text-gray-700 hover:bg-transparent cursor-pointer" />
+          </div>
+        </Carousel>
       </div>
 
       {/* Currently */}
