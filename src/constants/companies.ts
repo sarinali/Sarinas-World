@@ -10,7 +10,7 @@ export const companiies = [
         companyName: "Cua",
         companyURL: "https://cua.ai/",
         companyImage: "https://cua.ai/cua-logo-accent.svg",
-        companyTeam: "AI Infrastructure",
+        companyTeam: "Computer-use AI Infrastructure",
         companyWorkDescription: "Computer use agents, infrastructure, and technical content for NeurIPS and ClawCon SF."
     },
     {
