@@ -13,9 +13,9 @@ import {
 import PixelMosaic from "@/components/pixel-mosaic";
 
 const cities = [
-  { label: "Toronto", src: "/toronto.jpg", eyebrow: "based in Toronto" },
-  { label: "SF", src: "/sf.jpg", eyebrow: "based in SF" },
-  { label: "Hong Kong", src: "/hk.jpg", eyebrow: "previously based in HK" },
+  { label: "Toronto", src: "/toronto.jpg", eyebrow: "based in Toronto", flag: "🇨🇦", country: "Canada" },
+  { label: "SF", src: "/sf.jpg", eyebrow: "based in SF", flag: "🇺🇸", country: "United States" },
+  { label: "Hong Kong", src: "/hk.jpg", eyebrow: "previously based in HK", flag: "🇭🇰", country: "Hong Kong" },
 ];
 
 export default function SimpleHome() {
@@ -62,21 +62,32 @@ export default function SimpleHome() {
 
       {/* City carousel */}
       <div className="mb-6">
-        <p
-          className="text-xs text-gray-400 mb-1.5"
-          style={{ fontFamily: "monospace" }}
-        >
-          {city.eyebrow}
-        </p>
+        <HoverCard>
+          <HoverCardTrigger asChild>
+            <p
+              className="text-xs text-gray-400 mb-1.5 cursor-default w-fit"
+              style={{ fontFamily: "monospace" }}
+            >
+              {city.eyebrow}
+            </p>
+          </HoverCardTrigger>
+          <HoverCardContent align="start" className="w-auto px-3 py-2 border-gray-200 bg-white/90 backdrop-blur-sm shadow-md">
+            <div className="flex items-center gap-2">
+              <span className="text-base leading-none">{city.flag}</span>
+              <span className="text-xs text-gray-500">{city.country.toLowerCase()}</span>
+              <span className="text-xs text-gray-400" style={{ fontFamily: "monospace" }}>(˶ᵔ ᵕ ᵔ˶)</span>
+            </div>
+          </HoverCardContent>
+        </HoverCard>
 
-        <div className="overflow-hidden" style={{ aspectRatio: "6/1" }}>
+        <div className="overflow-hidden" style={{ aspectRatio: "3/1" }}>
           <PixelMosaic
             src={city.src}
-            cellSize={4}
+            cellSize={3}
             gap={1}
             radius={1}
-            renderWidth={600}
-            renderHeight={100}
+            renderWidth={1200}
+            renderHeight={400}
           />
         </div>
 

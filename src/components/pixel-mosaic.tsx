@@ -18,7 +18,7 @@ export default function PixelMosaic({
   gap = 2,
   radius = 2,
   renderWidth = 600,
-  renderHeight = 450,
+  renderHeight = 200,
   className = "",
 }: PixelMosaicProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -50,11 +50,27 @@ export default function PixelMosaic({
         return
       }
 
+      // Cover crop: preserve aspect ratio, crop to fill
+      const imgRatio = source.naturalWidth / source.naturalHeight
+      const canvasRatio = renderWidth / renderHeight
+      let sx, sy, sw, sh
+      if (imgRatio > canvasRatio) {
+        sh = source.naturalHeight
+        sw = sh * canvasRatio
+        sx = (source.naturalWidth - sw) / 2
+        sy = 0
+      } else {
+        sw = source.naturalWidth
+        sh = sw / canvasRatio
+        sx = 0
+        sy = (source.naturalHeight - sh) / 2
+      }
+
       const offscreen = document.createElement("canvas")
       offscreen.width = renderWidth
       offscreen.height = renderHeight
       const offCtx = offscreen.getContext("2d")!
-      offCtx.drawImage(source, 0, 0, renderWidth, renderHeight)
+      offCtx.drawImage(source, sx, sy, sw, sh, 0, 0, renderWidth, renderHeight)
       const { data } = offCtx.getImageData(0, 0, renderWidth, renderHeight)
 
       for (let y = 0; y < renderHeight; y += step) {
