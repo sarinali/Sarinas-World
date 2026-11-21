@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { companiies } from "@/constants/companies";
@@ -10,35 +9,12 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  type CarouselApi,
-} from "@/components/ui/carousel";
-import PixelMosaic from "@/components/pixel-mosaic";
+import TechnicalBlogs from "@/components/technical-blogs";
 
-const cities = [
-  { label: "Toronto", src: "/toronto.jpg", eyebrow: "based in Toronto", flag: "🇨🇦", country: "Canada" },
-  { label: "SF", src: "/sf.jpg", eyebrow: "based in SF", flag: "🇺🇸", country: "United States" },
-  { label: "Hong Kong", src: "/hk.jpg", eyebrow: "previously based in HK", flag: "🇭🇰", country: "Hong Kong" },
-];
 
 export default function SimpleHome() {
   const current = companiies[0];
   const past = companiies.slice(1);
-  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
-  const [cityIndex, setCityIndex] = useState(0);
-  const city = cities[cityIndex];
-
-  useEffect(() => {
-    if (!carouselApi) return;
-    const onSelect = () => setCityIndex(carouselApi.selectedScrollSnap());
-    carouselApi.on("select", onSelect);
-    return () => { carouselApi.off("select", onSelect); };
-  }, [carouselApi]);
 
   return (
     <main className="max-w-[600px] mx-auto px-8 py-8">
@@ -55,7 +31,7 @@ export default function SimpleHome() {
           <p className="text-gray-400 text-sm tracking-widest">李晶</p>
         </div>
         <div className="flex flex-col items-end gap-1.5 pt-2">
-          {socials.slice(0, 4).map((s) => (
+          {socials.filter(s => !s.linkURL.includes("notion") && s.linkInfo.toLowerCase() !== "blog").slice(0, 3).map((s) => (
             <Link
               key={s.linkURL}
               href={s.linkURL}
@@ -76,62 +52,6 @@ export default function SimpleHome() {
         engineering, and startups. Studying at UofT, previously on exchange at HKU.
       </p>
 
-      {/* City carousel */}
-      <div className="mb-6">
-        <HoverCard>
-          <HoverCardTrigger asChild>
-            <p
-              className="text-xs text-gray-400 mb-1.5 cursor-default w-fit"
-              style={{ fontFamily: "monospace" }}
-            >
-              {city.eyebrow}
-            </p>
-          </HoverCardTrigger>
-          <HoverCardContent align="start" className="w-auto px-3 py-2 border-gray-200 bg-white/90 backdrop-blur-sm shadow-md">
-            <div className="flex items-center gap-2">
-              <span className="text-base leading-none">{city.flag}</span>
-              <span className="text-xs text-gray-500">{city.country.toLowerCase()}</span>
-              <span className="text-xs text-gray-400" style={{ fontFamily: "monospace" }}>(˶ᵔ ᵕ ᵔ˶)</span>
-            </div>
-          </HoverCardContent>
-        </HoverCard>
-
-        <Carousel setApi={setCarouselApi} opts={{ loop: true }} className="w-full">
-          <CarouselContent>
-            {cities.map((c) => (
-              <CarouselItem key={c.label}>
-                <div className="overflow-hidden" style={{ aspectRatio: "3/1" }}>
-                  <PixelMosaic
-                    src={c.src}
-                    cellSize={3}
-                    gap={1}
-                    radius={1}
-                    renderWidth={1200}
-                    renderHeight={400}
-                  />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <div className="flex items-center justify-end gap-2 mt-1.5">
-            <CarouselPrevious className="static translate-y-0 w-5 h-5 border-0 shadow-none text-gray-400 hover:text-gray-700 hover:bg-transparent cursor-pointer" />
-            <div className="flex gap-1.5">
-              {cities.map((c, i) => (
-                <button
-                  key={c.label}
-                  onClick={() => carouselApi?.scrollTo(i)}
-                  className={`w-1.5 h-1.5 rounded-full transition-colors cursor-pointer ${
-                    i === cityIndex ? "bg-gray-500" : "bg-gray-200 hover:bg-gray-300"
-                  }`}
-                  aria-label={c.label}
-                />
-              ))}
-            </div>
-            <CarouselNext className="static translate-y-0 w-5 h-5 border-0 shadow-none text-gray-400 hover:text-gray-700 hover:bg-transparent cursor-pointer" />
-          </div>
-        </Carousel>
-      </div>
-
       {/* Currently */}
       <div className="mb-5">
         <p className="text-xs text-gray-400 uppercase tracking-widest mb-2.5">
@@ -151,6 +71,8 @@ export default function SimpleHome() {
           ))}
         </div>
       </div>
+
+      <TechnicalBlogs />
 
       <p className="text-xs text-gray-300 mt-8">Last updated: May 2026</p>
     </main>

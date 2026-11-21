@@ -1,0 +1,80 @@
+{
+  "html": "<p>From 2023 to 2025, I worked across software testing, browser infrastructure, equity derivatives, commerce, and cloud infrastructure at Tarion, Mozilla, BMO Capital Markets, Shopify, and Confluent. These are my original notes on the projects, teams, and experiences from each internship, starting with the most recent.</p><h2>Summer 2025</h2><p>Summer @ <a href=\"https://www.confluent.io/\">Confluent</a>. Data in motion. Challenging engineering. </p><p>Some of my projects included:</p><ul><li>Building and designing an entire emulator system for our central infrastructure codebase. From design to implementation it was me. And I did it in a language I\u2019ve never written (Golang + Terraform), in a role I\u2019ve never done (Infrastructure Engineering).</li></ul><ul><li>I saved my company a projected <strong>~$50K</strong><strong> </strong>in cloud costs per month in <strong>just 12 weeks, with no prior use of the product itself</strong>. We cut down the CI testing by ~20 minutes with an integration with Emu (CSP Emulator)</li></ul><ul><li>I hacked AWS and Azure \u2014 I can fake authenticated users using the command line with my proxy, an interesting technical challenge.</li></ul><figure><img src=\"/blog-media/notion/4cf9d2b8f8fd8fd6.png\" alt=\"living the stream\"/><figcaption>living the stream</figcaption></figure><figure><img src=\"/blog-media/notion/f51c158278932ea7.png\" alt=\"toronto interns in texas\"/><figcaption>toronto interns in texas</figcaption></figure><figure><img src=\"/blog-media/notion/9cb8954dd917a905.png\" alt=\"cleaning some trash for national intern day\"/><figcaption>cleaning some trash for national intern day</figcaption></figure><figure><img src=\"/blog-media/notion/c58a6948a43e1cac.png\" alt=\"the dog at the wework everyday\"/><figcaption>the dog at the wework everyday</figcaption></figure><h2>Winter 2025</h2><p>I was @ Shopify as a Software Engineering Intern working on the Product Grouping team. Did you know that bundles increase the average cart value by 50%? Product grouping is an essential part of selling strategies that Shop employs to <em>maximize shareholder value </em>\ud83d\ude00.</p><p>Some interesting things I\u2019ve been working on:</p><ol><li>Combined listing sync job. Products can have up to 2000 variants, and combined listings work by listing a product as a variant. This means that you can actually have, 2000 x 2000 different variants total. How do you sync all the media, pricing and inventory data?</li></ol><ol><li>Fixing exceptions with over 100k+ events with dynamic GraphQL version checking, focusing on making the merchant experience seamless. \ud83d\ude4f</li></ol><ol><li>Product configuration URL regex validation. How do you verify that a URL passed in is valid? This is prevent bundles apps from containing malformed URLs for merchants that choose to create their own custom experience by making a Shopify 3p app.</li></ol><ol><li>Fixing deadlocks. I reduced a single deadlock instance by 98% in my time there. </li></ol><figure><img src=\"/blog-media/notion/fac61d5844babbaa.png\" alt=\"shop GIRL interns \ud83d\udc6f\u200d\u2640\ufe0f\"/><figcaption>shop GIRL interns \ud83d\udc6f\u200d\u2640\ufe0f</figcaption></figure><figure><img src=\"/blog-media/notion/79a778f7ed9d73eb.png\" alt=\"matcha @ shop in TORONTO \ud83d\udccd\"/><figcaption>matcha @ shop in TORONTO \ud83d\udccd</figcaption></figure><figure><img src=\"/blog-media/notion/05d364700f1e901c.png\" alt=\"my first and last time meeting my team in NYC \ud83d\udccd\"/><figcaption>my first and last time meeting my team in NYC \ud83d\udccd</figcaption></figure><h2>Fall 2024</h2><p>Currently @ <a href=\"https://capitalmarkets.bmo.com/en/\">BMO Capital Markets</a> as a Quantitative Developer Intern. </p><p>On the Data Cognition team doing software for equity derivatives Learning a lot about engineering and finance, really great place to be!</p><p>I worked on some pretty interesting things:</p><ol><li>Correlation between tickers using Kendal Tau. One of my biggest challenges was figuring out how to incorporate the divide and conquer method that yields a worst case runtime of <code>O(nlogn)</code> </li></ol><ol><li>Options tick data API, total granular and working with a <em>hugeeeee time series database</em></li></ol><ol><li>Outlier detection for client impact scores. How do we decide that clients know more information than us when trading with us? How do we detect anomalies?</li></ol><p>And many others.</p><figure><img src=\"/blog-media/notion/506c060e04ef8b75.png\" alt=\"Fall class of 2024 :)\"/><figcaption>Fall class of 2024 </figcaption></figure><figure><img src=\"/blog-media/notion/ae7bcc5fbb4aca08.png\" alt=\"model status \ud83d\udc85\"/><figcaption>model status \ud83d\udc85</figcaption></figure><h2>Summer 2024</h2><p>Worked at <a href=\"https://www.mozilla.org/en-US/\">Mozilla</a>, LOVE the team, culture and work! </p><p>I worked as a software engineer intern on the Firefox Desktop QA team. </p><p>I\u2019m learning a lot about CI (integrations with GCP, test infrastructure, VMs and monitoring) with a dash of automation </p><p>My intern project this time is focused around monitoring infrastructure; building out integrations between our CI environment and GCP, channels of communication for receiving reports about cron jobs. </p><p><strong>Highlights</strong></p><figure><img src=\"/blog-media/notion/b5d2eefce18e7ffb.png\" alt=\"RAHHH!! Mozillian Interns \ud83e\udd79\"/><figcaption>RAHHH!! Mozillian Interns \ud83e\udd79</figcaption></figure><figure><img src=\"/blog-media/notion/450f720d352df3aa.png\" alt=\"Literally the cutest firedoge ever \ud83e\udd79\"/><figcaption>Literally the cutest firedoge ever \ud83e\udd79</figcaption></figure><figure><img src=\"/blog-media/notion/e1d1317c465ca2c8.png\" alt=\"Mozilla Intern Dinner! \ud83e\udd8a\"/><figcaption>Mozilla Intern Dinner! \ud83e\udd8a</figcaption></figure><figure><img src=\"/blog-media/notion/537505955a4c172b.png\" alt=\"Team went on a boat :D\"/><figcaption>Team went on a boat </figcaption></figure><p>From Mozilla, I learned the importance of simplicity in design and solutions. Although it\u2019s tempting to implement a highly complex and advanced system with many many bells and whistles, sometimes the best decision is to keep it simple and elegant. Those are the best solutions.</p><p>Additionally, I realized the value of an amazing team and manager! They constantly uplift me and motivate me to work my hardest to push the project forward. They encourage me to take initiative and step into leadership roles even as an intern. It is really a breath of fresh air!</p><p>If you want to learn more about my technical work, feel free to reach out to me! I am more than happy to share.</p><h2>Summer 2023</h2><p>Worked at <a href=\"https://www.tarion.com/\">Tarion</a>. Had a lot of fun as a Software Analyst Intern. </p><p>I learned a lot about software testing, developing applications for testing teams and how to identify success criteria and evaluate correctness.</p><p>My intern project was hyper focused on creating a dashboard that could be used for the QAs to quickly smoke test their applications. </p><p><strong>Highlights</strong></p><figure><img src=\"/blog-media/notion/bf58e1450b977297.png\" alt=\"First time at the office :D\"/><figcaption>First time at the office </figcaption></figure><figure><img src=\"/blog-media/notion/c8c5281c006ccc14.png\" alt=\"Meeting\u2026.\"/><figcaption>Meeting\u2026.</figcaption></figure><p>At Tarion, I learned what it really meant to be a part of a professional team and how to interact with people of all ages, not just those of my age group. It was an invaluable experience that I am so grateful for.</p><p>If you are interested in learning more about my work there on the technical side, please reach out to me!</p>",
+  "media": [
+    {
+      "src": "/blog-media/notion/bf58e1450b977297.png",
+      "caption": "First time at the office :D",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/c8c5281c006ccc14.png",
+      "caption": "Meeting\u2026.",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/b5d2eefce18e7ffb.png",
+      "caption": "RAHHH!! Mozillian Interns \ud83e\udd79",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/450f720d352df3aa.png",
+      "caption": "Literally the cutest firedoge ever \ud83e\udd79",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/e1d1317c465ca2c8.png",
+      "caption": "Mozilla Intern Dinner! \ud83e\udd8a",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/537505955a4c172b.png",
+      "caption": "Team went on a boat :D",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/506c060e04ef8b75.png",
+      "caption": "Fall class of 2024 :)",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/ae7bcc5fbb4aca08.png",
+      "caption": "model status \ud83d\udc85",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/fac61d5844babbaa.png",
+      "caption": "shop GIRL interns \ud83d\udc6f\u200d\u2640\ufe0f",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/79a778f7ed9d73eb.png",
+      "caption": "matcha @ shop in TORONTO \ud83d\udccd",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/05d364700f1e901c.png",
+      "caption": "my first and last time meeting my team in NYC \ud83d\udccd",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/4cf9d2b8f8fd8fd6.png",
+      "caption": "living the stream",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/f51c158278932ea7.png",
+      "caption": "toronto interns in texas",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/9cb8954dd917a905.png",
+      "caption": "cleaning some trash for national intern day",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/c58a6948a43e1cac.png",
+      "caption": "the dog at the wework everyday",
+      "type": "image"
+    }
+  ]
+}

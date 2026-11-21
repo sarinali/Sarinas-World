@@ -177,3 +177,111 @@
   filter: blur(30px);
   z-index: -1;
 }
+.technical-blogs { margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid #eee; }
+.blog-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:2rem 1.25rem; }
+.blog-card { display:block; min-width:0; }
+.blog-featured { grid-column:1/-1; }
+.blog-cover { position:relative; isolation:isolate; overflow:hidden; aspect-ratio:16/9; border-radius:10px; background:#122c27; }
+.blog-cover-colors { position:absolute; inset:-30%; filter:blur(26px); background:radial-gradient(ellipse at 22% 76%,#b4cbb0 0%,transparent 32%),radial-gradient(ellipse at 68% 28%,#678879 0%,transparent 35%),radial-gradient(ellipse at 90% 95%,#071d18 0%,transparent 50%); transition:transform .6s ease; }
+.blog-cover--indigo { background:#111b36; }
+.blog-cover--indigo .blog-cover-colors { background:radial-gradient(ellipse at 20% 85%,#b4cce2,transparent 38%),radial-gradient(ellipse at 65% 10%,#777697,transparent 45%),radial-gradient(ellipse at 90% 80%,#020f23,transparent 48%); }
+.blog-cover--clay { background:#6f2920; }
+.blog-cover--clay .blog-cover-colors { background:radial-gradient(ellipse at 18% 90%,#ebd8aa,transparent 35%),radial-gradient(ellipse at 30% 15%,#bc795b,transparent 45%),radial-gradient(ellipse at 90% 40%,#45180f,transparent 50%); }
+.blog-cover-grain { position:absolute; inset:0; opacity:.16; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' opacity='.7' d='M0 0h180v180H0z'/%3E%3C/svg%3E"); }
+.blog-cover-brand { position:absolute; inset:0; display:flex; justify-content:center; align-items:center; gap:10px; color:white; font-size:2rem; font-weight:600; letter-spacing:-.06em; }
+.blog-cover-brand img { width:32px; height:32px; object-fit:contain; filter:brightness(0) invert(1); }
+.blog-featured .blog-cover-brand { font-size:2.75rem; }
+.blog-meta { color:#888; font-size:.75rem; line-height:1.6; margin-top:1rem; }
+.blog-card h3 { font-size:1rem; line-height:1.45; margin-top:.5rem; letter-spacing:-.025em; }
+.blog-featured h3 { font-size:1.5rem; }
+.blog-summary { color:#777; font-size:.875rem; line-height:1.7; margin-top:.65rem; }
+.blog-card:hover .blog-cover-colors { transform:scale(1.08); }
+.blog-card:focus-visible { outline:2px solid #65786d; outline-offset:6px; border-radius:10px; }
+@media(max-width:480px) { .blog-grid { grid-template-columns:1fr; } .blog-featured h3 { font-size:1.25rem; } }
+@media(prefers-reduced-motion:reduce) { .blog-cover-colors { transition:none; } }
+
+.blog-cover--forest { --ink:#0b1912; --mid:#203d2b; --wash:#587b61; --light:#b8d6bf; }
+.blog-cover--indigo { --ink:#070f20; --mid:#152e4d; --wash:#456e96; --light:#b3cce2; }
+.blog-cover--clay { --ink:#100d14; --mid:#392032; --wash:#80576e; --light:#c5b1c2; }
+.blog-cover { background:var(--ink); }
+.blog-cover .blog-cover-colors { inset:-12%; filter:blur(32px); background:radial-gradient(ellipse at 25% 12%,var(--light) 0%,transparent 27%),radial-gradient(ellipse at 90% 92%,var(--wash) 0%,transparent 36%),radial-gradient(ellipse at 45% 65%,var(--mid) 0%,transparent 46%); }
+.blog-cover--watercolor .blog-cover-colors { inset:-5%; filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='wash' x='-20%25' y='-20%25' width='140%25' height='140%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.014 .025' numOctaves='3' seed='12' result='noise'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='noise' scale='65' xChannelSelector='R' yChannelSelector='G'/%3E%3CfeGaussianBlur stdDeviation='3'/%3E%3C/filter%3E%3C/svg%3E#wash"); background:radial-gradient(ellipse at 22% 8%,var(--light) 0%,var(--wash) 21%,transparent 42%),radial-gradient(ellipse at 84% 90%,var(--wash) 0%,var(--mid) 29%,transparent 52%),radial-gradient(ellipse at 35% 80%,var(--mid) 0%,transparent 43%); }
+.blog-cover--watercolor .blog-cover-grain { opacity:.3; mix-blend-mode:soft-light; }
+.blog-cover--watercolor::after { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(ellipse at center,transparent 30%,#0005); }
+.blog-cover-brand { z-index:1; }
+.watercolor-city { display:block; width:100%; height:auto; aspect-ratio:3/1; border-radius:3px; }
+/* Nature-inspired compositions: canopy, water rings, and shafts of sunlight. */
+.blog-cover-brand img { width:34%; max-width:190px; height:auto; max-height:70px; filter:none; }
+.blog-cover--forest.blog-cover--watercolor .blog-cover-colors { inset:-12%; background:radial-gradient(ellipse at 50% 0%,#c5d8b4 0%,transparent 32%),repeating-conic-gradient(from 12deg at 52% -20%,#0a1c13 0deg 9deg,#527454 12deg 15deg,#172c1c 19deg 26deg); filter:blur(15px); transform:scale(1.1); }
+.blog-cover--forest.blog-cover--watercolor::before { content:""; position:absolute; inset:0; z-index:1; opacity:.35; background:repeating-linear-gradient(82deg,transparent 0% 13%,#07170e 14% 16%,transparent 18% 31%); filter:blur(6px); }
+.blog-cover--indigo.blog-cover--watercolor .blog-cover-colors { inset:-35%; background:repeating-radial-gradient(ellipse at 60% 55%,#10243b 0px,#274b67 13px,#7194a8 17px,#18394f 23px,#0a192e 42px); filter:blur(5px); transform:rotate(-18deg) scaleY(.65); }
+.blog-cover--clay.blog-cover--watercolor .blog-cover-colors { inset:-15%; background:radial-gradient(ellipse at 8% 0%,#ecd0b3 0%,transparent 40%),repeating-conic-gradient(from 100deg at 5% -15%,#281c2d 0deg 10deg,#b38b9c 12deg 16deg,#452839 20deg 31deg); filter:blur(12px); }
+.imported-article { color:#4b5563; line-height:1.85; overflow-wrap:anywhere; }
+.imported-article p,.imported-article ul,.imported-article ol,.imported-article blockquote { margin:1.3rem 0; }
+.imported-article h1,.imported-article h2,.imported-article h3,.imported-article h4 { color:#111827; line-height:1.3; margin:2rem 0 1rem; font-weight:600; }
+.imported-article h1 { font-size:2rem; }.imported-article h2 { font-size:1.6rem; }.imported-article h3 { font-size:1.25rem; }
+.imported-article a { text-decoration:underline; text-underline-offset:3px; }
+.imported-article img,.imported-article video { display:block; max-width:100%; height:auto; margin:1.5rem auto; border-radius:6px; }
+.imported-article ul { list-style:disc; padding-left:1.5rem; }.imported-article ol { list-style:decimal; padding-left:1.5rem; }
+.imported-article pre { padding:1rem; overflow:auto; background:#f4f5f6; border-radius:6px; font-size:.85rem; }.imported-article code { font-family:monospace; }
+.imported-article table { display:block; overflow-x:auto; border-collapse:collapse; margin:1.5rem 0; }.imported-article th,.imported-article td { border:1px solid #ddd; padding:.65rem; text-align:left; }
+.imported-article blockquote { border-left:3px solid #b4cbb0; padding-left:1rem; }.imported-article figcaption { font-size:.875rem; text-align:center; color:#777; }
+/* Uneven pigment pools, replacing the geometric nature motifs. */
+.blog-cover--forest.blog-cover--watercolor .blog-cover-colors,
+.blog-cover--indigo.blog-cover--watercolor .blog-cover-colors,
+.blog-cover--clay.blog-cover--watercolor .blog-cover-colors {
+ inset:-12%;
+ transform:none;
+ filter:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='pigment' x='-20%25' y='-20%25' width='140%25' height='140%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.008 .012' numOctaves='4' seed='19' result='flow'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='flow' scale='95' xChannelSelector='R' yChannelSelector='G'/%3E%3CfeGaussianBlur stdDeviation='9'/%3E%3C/filter%3E%3C/svg%3E#pigment");
+}
+.blog-cover--forest.blog-cover--watercolor .blog-cover-colors { background:radial-gradient(ellipse at 22% 12%,#a4bda0 0%,#6c8867 14%,transparent 41%),radial-gradient(ellipse at 68% 80%,#537354 0%,transparent 42%),radial-gradient(ellipse at 95% 35%,#2c4d36 0%,transparent 38%); }
+.blog-cover--indigo.blog-cover--watercolor .blog-cover-colors { background:radial-gradient(ellipse at 78% 18%,#b0c5cc 0%,#638c9e 12%,transparent 38%),radial-gradient(ellipse at 12% 70%,#577a92 0%,transparent 43%),radial-gradient(ellipse at 67% 82%,#23465a 0%,transparent 39%); }
+.blog-cover--clay.blog-cover--watercolor .blog-cover-colors { background:radial-gradient(ellipse at 12% 85%,#c2a2ad 0%,#8f657a 13%,transparent 40%),radial-gradient(ellipse at 75% 18%,#91728b 0%,transparent 42%),radial-gradient(ellipse at 90% 85%,#52344b 0%,transparent 32%); }
+.blog-cover--forest.blog-cover--watercolor::before { display:none; }
+.blog-cover--watercolor .blog-cover-grain { opacity:.22; mix-blend-mode:soft-light; }
+.blog-cover--forest.blog-cover--watercolor .blog-cover-colors,
+.blog-cover--indigo.blog-cover--watercolor .blog-cover-colors,
+.blog-cover--clay.blog-cover--watercolor .blog-cover-colors { inset:-4%; filter:none; background-size:cover; background-position:center; transform:none; }
+.blog-cover--watercolor .blog-cover-grain { opacity:.09; mix-blend-mode:normal; }
+.imported-article img { width:auto; max-width:100%; object-fit:contain; }
+.personal-cover-title { font-family:var(--font-playfair); font-size:1.7rem; font-weight:400; letter-spacing:-.02em; }
+.imported-article iframe { display:block; width:100%; aspect-ratio:16/9; border:0; border-radius:6px; margin:1.5rem 0; }
+.blog-cover--ochre { --ink:#211b13; }.blog-cover--rose { --ink:#271824; }
+.career-collage { background:radial-gradient(ellipse at 50% 0%,#151326,transparent 65%),#050505; display:flex; align-items:center; justify-content:center; gap:3%; padding:5%; }
+.career-cover-title { color:#fff; font-family:var(--font-playfair); font-size:clamp(1rem,3vw,1.65rem); line-height:1.15; text-align:center; flex:0 0 42%; letter-spacing:-.04em; z-index:1; }
+.career-cover-title span { font-style:italic; }
+.career-photo-strip { display:flex; align-items:center; gap:8%; width:26%; height:70%; }
+.career-photo { width:57%; height:76%; object-fit:cover; border-radius:3px; box-shadow:0 5px 20px #0008; }
+.career-photo-0 { transform:translateY(-12%) rotate(-5deg); }.career-photo-1 { transform:translateY(16%) rotate(5deg); }
+.career-photo-right .career-photo-0 { transform:translateY(12%) rotate(-4deg); }.career-photo-right .career-photo-1 { transform:translateY(-15%) rotate(6deg); }
+/* Four independent photo cards frame the word, as in the Runway reference. */
+.work-cover { background:#000; }
+.work-cover-word { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-family:Arial,Helvetica,sans-serif; font-size:clamp(2rem,5vw,4rem); font-weight:600; color:#fff; letter-spacing:-.065em; line-height:1; }
+.work-photo { position:absolute; object-fit:cover; border-radius:3px; width:18%; height:26%; top:37%; }
+.work-photo-mozilla { left:2%; height:32%; top:34%; object-position:center; }
+.work-photo-bmo { left:21.5%; width:17%; object-position:center 75%; }
+.work-photo-dinner { right:21.5%; width:15%; height:34%; top:33%; object-position:center 55%; }
+.work-photo-confluent { right:2%; width:18%; object-position:center 65%; }
+.work-cover { container-type:inline-size; }
+.work-cover-word { font-size:16cqw; width:34%; text-align:center; z-index:1; }
+.work-photo-mozilla { left:2%; width:15%; }
+.work-photo-bmo { left:18.5%; width:14%; }
+.work-photo-dinner { right:18.5%; width:14%; }
+.work-photo-confluent { right:2%; width:15%; }
+.work-cover-word { font-family:var(--font-playfair); font-weight:400; font-size:14cqw; letter-spacing:-.04em; }
+.blog-card { transition:transform .25s ease; }
+.blog-card .blog-cover { transition:filter .25s ease,box-shadow .25s ease; }
+.blog-card:hover { transform:translateY(-4px); }
+.blog-card:hover .blog-cover { filter:brightness(1.12); box-shadow:0 8px 24px #00000016; }
+.blog-card:hover h3 { text-decoration:underline; text-underline-offset:5px; text-decoration-thickness:1px; }
+.personal-cover-title { font-family:inherit; font-weight:400; }
+@media(prefers-reduced-motion:reduce) { .blog-card,.blog-card .blog-cover { transition:none; }.blog-card:hover { transform:none; } }
+/* Keep every cover label at a comparable optical size. */
+.blog-cover { container-type:inline-size; }
+.personal-cover-title { font-family:inherit; font-weight:400; font-size:6cqw; line-height:1.2; }
+.blog-cover-brand img { width:34%; max-width:none; max-height:none; height:auto; }
+.work-cover-word { font-family:inherit; font-weight:400; font-size:12cqw; }
+.work-photo-confluent { right:18.5%; width:14%; height:26%; top:37%; }
+.work-photo-dinner { right:2%; width:15%; height:34%; top:33%; }
+.work-cover .work-photo-dinner { right:18.5%; width:14%; height:26%; top:37%; }
+.work-cover .work-photo-confluent { right:2%; width:15%; height:34%; top:33%; }

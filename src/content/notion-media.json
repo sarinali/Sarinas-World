@@ -1,0 +1,223 @@
+{
+  "vectoradam-on-a-sphere": [
+    {
+      "src": "/blog-media/notion/cbfa8cb829daeba1.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/02ea8000750012dd.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/5e4909006e05b714.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/2ab8b35861c3602a.png",
+      "caption": "The loss graph of the point",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/f6fb8e0395d08332.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/c929a39cedc5cf39.png",
+      "caption": "For example, if VectorAdam returns the gradient vector of <code>(0.5,0.5,0.5)</code> and I am currently on point A, I want to project it onto the normal vector of A and then subtract that from the original gradient vector from VectorAdam producing a new vector, pointing A in the direction of B. ",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/7be0506b7b7e9e33.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/903bd30ceee06b79.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/bdc9d163591161c2.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/8f70eb694b8014e7.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/bd0040bb73c01623.png",
+      "caption": "The green shows the loss of non projected simulations, the blue is the loss of the projected simulations. The solid lines represent the average loss (of the unprojected and projected separately)",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/d0cf5c29bbd7c73c.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/7140c786ce86a472.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/678b3b581c01edee.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/60f73d467df8d75d.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/9f840e8ec9d8a38a.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/714df8c3d2cc49f5.png",
+      "caption": "itr 1",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/f56407f5dc22c43c.png",
+      "caption": "itr 1 (momentum)",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/1ffbc00c824cf3d0.png",
+      "caption": "itr 2",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/e771828c8dba0276.png",
+      "caption": "itr 2 (momentum)",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/1f24fb40463e4c4a.png",
+      "caption": "itr 3",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/1ac0cb5aa92f6947.png",
+      "caption": "itr 3 (momentum)",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/79dc76683567af63.png",
+      "caption": "itr 4",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/4039c6d09e0bd14e.png",
+      "caption": "itr 4 (momentum)",
+      "type": "image"
+    }
+  ],
+  "professional-life-2023-2025": [
+    {
+      "src": "/blog-media/notion/bf58e1450b977297.png",
+      "caption": "First time at the office :D",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/c8c5281c006ccc14.png",
+      "caption": "Meeting\u2026.",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/b5d2eefce18e7ffb.png",
+      "caption": "RAHHH!! Mozillian Interns \ud83e\udd79",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/450f720d352df3aa.png",
+      "caption": "Literally the cutest firedoge ever \ud83e\udd79",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/e1d1317c465ca2c8.png",
+      "caption": "Mozilla Intern Dinner! \ud83e\udd8a",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/537505955a4c172b.png",
+      "caption": "Team went on a boat :D",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/506c060e04ef8b75.png",
+      "caption": "Fall class of 2024 :)",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/ae7bcc5fbb4aca08.png",
+      "caption": "model status \ud83d\udc85",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/fac61d5844babbaa.png",
+      "caption": "shop GIRL interns \ud83d\udc6f\u200d\u2640\ufe0f",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/79a778f7ed9d73eb.png",
+      "caption": "matcha @ shop in TORONTO \ud83d\udccd",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/05d364700f1e901c.png",
+      "caption": "my first and last time meeting my team in NYC \ud83d\udccd",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/4cf9d2b8f8fd8fd6.png",
+      "caption": "living the stream",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/f51c158278932ea7.png",
+      "caption": "toronto interns in texas",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/9cb8954dd917a905.png",
+      "caption": "cleaning some trash for national intern day",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/c58a6948a43e1cac.png",
+      "caption": "the dog at the wework everyday",
+      "type": "image"
+    }
+  ],
+  "pencils-journey": [
+    {
+      "src": "/blog-media/notion/73b46772dff00219.png",
+      "caption": "this is my personal insta. i made myself into an ad (2k+ impressions)",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/d6e916eb480db598.png",
+      "caption": "this is also my personal insta (over 500+ views)",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/a86e29ac0381a5b6.png",
+      "caption": "initial mockups",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/bb8f648c6ee84f6d.png",
+      "caption": "",
+      "type": "image"
+    }
+  ]
+}

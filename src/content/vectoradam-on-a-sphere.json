@@ -1,0 +1,125 @@
+{
+  "html": "<p>This is a record of my experiments adapting VectorAdam for gradient-based optimization on a sphere. I explore why normalizing each update can lead to oscillation, how projecting gradients onto the tangent plane changes convergence, and the questions about momentum and parallel transport that followed. The notes below document the process, including approaches that did not work.</p><h2>Optimizing on a Sphere</h2><p>Sarina Li</p><h3>Problem</h3><p>Vector Adam, initially built on top of the ADAM optimization for neural networks has been observed to have issues with vectors. As a result, a variant (VectorAdam) was introduced.</p><p>Now imagine, let <code>a</code> and <code>b</code> be some arbitrary points on a sphere <code>S</code>. The goal is to use a variant of Vector Adam so that any arbitrary point <code>n</code> on the sphere can be optimized while staying on the sphere.</p><p>See the original <a href=\"https://www.dgp.toronto.edu/~zling/vector-adam/\">VectorAdam</a> paper done by my very smart, beautiful and awesome mentor Selena </p><h3><strong>Progress</strong></h3><h3><strong>May 22nd, 2024</strong></h3><p>I began this exploratory project on May 22nd 2024. I set up the repository and code environment. I also ran a couple runs of the initial VectorAdam demo code to understand what it was trying to do.</p><p>On this day, I also played around with the code and created a simulation using VectorAdam to optimize for the least distance between two points.</p><figure><video controls preload=\"metadata\" src=\"/blog-media/notion/9dea16f8533e029a.mp4\"></video><figcaption></figcaption></figure><p>I noticed that the point would shoot out of the sphere, which is expected since with gradient descent, it will try to find the minimum by \u201cdescending\u201d the gradient. However, we don\u2019t want it to shoot out of the sphere. </p><h3>May 29th, 2024</h3><p>This week, I worked on a na\u00efve solution for the optimization problem. Basically, I forcefully normalized the point that the VectorAdam would spit out to be on the sphere, </p><pre><code>def normalize_tensor(tensor: torch.Tensor, radius: float):\n    magnitude = tensor.norm()\n    normalization_constant = radius / magnitude\n    normalized_tensor = normalization_constant * tensor\n    return normalized_tensor</code></pre><p>Using this code, I could get the point to stay on the sphere. However, visually I noticed that upon entering a certain point, it would start oscillating between two points on the function. With the regular unnormalized point, the loss function slowly converges. So, now the issue is figuring out the root of the oscillation issue. </p><figure><video controls preload=\"metadata\" src=\"/blog-media/notion/c107e2e2b4cc9350.mp4\"></video><figcaption></figcaption></figure><p>Here is a clearer video along with the loss function graphed (normalized and non-normalized)</p><figure><video controls preload=\"metadata\" src=\"/blog-media/notion/c46ceffb3bdc0953.mp4\"></video><figcaption></figcaption></figure><p>I noticed that the oscillation takes places after the normalized point reaches a certain point. The next step is to try to pinpoint why the issue occurs. Here are my current (planned) approaches:</p><ol><li>Adjust the learning rate<ol><li>Perhaps this will reveal more about what is going on</li></ol></li></ol><ol><li>Understand the gradient more </li></ol><ol><li>Investigate the pre and post normalization</li></ol><h3>June 7th, 2024</h3><p><strong>Adjusting Learning Rate</strong></p><ul><li>After decreasing the learning rate to <code>0.1</code> I found that the loss seemed to converge. However, You can see in earlier iterations there is some degree of oscillation</li></ul><p> </p><figure><img src=\"/blog-media/notion/cbfa8cb829daeba1.png\" alt=\"\"/><figcaption></figcaption></figure><ul><li>Increasing the learning rate to <code>1.0</code> intensified the oscillation. This was expected because the learning rate of <code>0.5</code> was already causing major oscillations.</li></ul><figure><img src=\"/blog-media/notion/02ea8000750012dd.png\" alt=\"\"/><figcaption></figcaption></figure><h3>June 16, 2024</h3><p><strong>Graphing the Gradient</strong></p><p>Today I am going to try to graph the gradient at each step. This is going to be difficult because I will first have to understand <em>what </em>and <em>how</em> I can even graph this gradient. My hopes are I will be able to see visually what points on the gradient VectorAdam is getting stuck between on the sphere. </p><p>The first step is figuring out where the gradient is computed. This was the easy part, I found out that the gradient is computed in </p><pre><code>loss1 = sphere_energy(a, b, v)\nloss1.backward()</code></pre><p>and the <code>.step()</code> simply uses the gradient computed. After investigating further, I realize that the <code>.grad</code> attribute is <em>just </em>the optimal direction to move in. After looking around for a while, I realize that my understanding is wrong; I thought that the gradient was a vector field of which I could completely graph. This is incorrect because the gradient is actually just the vector that points to the steepest rate of change. </p><p>So, after this new understanding, I think I will have to approach the visualization in a different way, the actual vector <em>may</em> or <em>may not </em>be useful to see. As a result, I will be reapproaching this graphing issue in the coming days.</p><p><strong>Projecting </strong><code><strong>g1</strong></code><strong> and </strong><code><strong>g2</strong></code><strong> onto the Sphere</strong></p><p>For this step, I first had to understand what each step was doing to the two of these tensors. I also need to determine which of the two is the vector and which is the scalar so that I can correctly project the vector. </p><p>This is one of the first tries to implemented the improved version of the algorithm. </p><figure><img src=\"/blog-media/notion/5e4909006e05b714.png\" alt=\"\"/><figcaption></figcaption></figure><p>In this case, I noticed that the loss graph would drastically drop, then flatten out. This is better than before but not what I was looking for. </p><p>However, visually, the point did not end up as expected.</p><figure><img src=\"/blog-media/notion/2ab8b35861c3602a.png\" alt=\"The loss graph of the point\"/><figcaption>The loss graph of the point</figcaption></figure><p>In hindsight, I realize now what I\u2019m doing is projecting this point directly on the sphere. This doesn\u2019t really make sense because that would modify the magnitude not the the actual direction which would matter for keeping the point on the sphere. </p><p>Another thing I thought I could do was move the operation of projecting onto the sphere. </p><figure><img src=\"/blog-media/notion/f6fb8e0395d08332.png\" alt=\"\"/><figcaption></figcaption></figure><p>However, unsurprisingly this didn\u2019t work and caused the loss to be very erratic. This is likely because of two reasons: the first being projection onto the sphere didn\u2019t even make sense (again just changing the magnitude would not fix the direction issue). The second problem is that the point on the actual sphere does not find the optimal spot between the two points. </p><h3>June 24th, 2024</h3><p>Today I am going to try to project the <code>g1</code> vector onto the tangent sphere of the plane. </p><p>Here is my thought process:</p><ol><li>Get the normal vector <code>\\vec{n}</code> from the current point </li></ol><ol><li>Get the output gradient vector of the VectorAdam algorithm <code>\\vec{v}</code></li></ol><ol><li>Find <code>proj_{\\vec{n}}\\vec{v}</code> (the goal is to project <code>\\vec{v}</code> onto the tangent plane of the current point)</li></ol><ol><li>Find <code>\\vec{v} - proj_{\\vec{n}}{\\vec{v}}</code> and return it.</li></ol><figure><img src=\"/blog-media/notion/c929a39cedc5cf39.png\" alt=\"For example, if VectorAdam returns the gradient vector of &lt;code&gt;(0.5,0.5,0.5)&lt;/code&gt; and I am currently on point A, I want to project it onto the normal vector of A and then subtract that from the original gradient vector from VectorAdam producing a new vector, pointing A in the direction of B. \"/><figcaption>For example, if VectorAdam returns the gradient vector of <code>(0.5,0.5,0.5)</code> and I am currently on point A, I want to project it onto the normal vector of A and then subtract that from the original gradient vector from VectorAdam producing a new vector, pointing A in the direction of B. </figcaption></figure><p>Afterward, correction by normalizing onto the sphere is still required, I was initially concerned with the point on the tangent plane being really far off from the sphere (like in the picture) but it didn\u2019t seem to pose as big of an issue as I initially thought. </p><figure><img src=\"/blog-media/notion/7be0506b7b7e9e33.png\" alt=\"\"/><figcaption></figcaption></figure><p>This is an interesting shape of the loss graph (seen in the first one beside the sphere) as it converges, but not to the correct point. This will have to be investigated.</p><p>Second of all, you can see visually (the yellow point) that the point did not converge to the most optimal spot between the red and green dots on the sphere. This shows that something is still wrong with the algorithm. </p><pre><code># v is gr and n is cur_point. find the projection of v onto the tangent plane of n\ndot_numerator = torch.dot(cur_point, gr)\ndot_denominator = torch.dot(cur_point, cur_point)\nproj_v_on_n = (dot_numerator / dot_denominator) * cur_point\n\nproj_on_tangent_plane = gr - proj_v_on_n\n\np.data.sub_(proj_on_tangent_plane, alpha=lr)</code></pre><p>This was the code used to perform the steps stated above. </p><h3>July 2nd, 2024</h3><p>This week I have two things to try, the first is going to be correcting the place where I perform the projection onto the tangent plane. In my code, I was performing it after finding <code>v_i</code> and <code>\\vec{\\widehat{m}}_i</code>. This was causing issue with the accumulation of the gradients. So, I moved it up to before <code>\\vec{m}_i</code> was even modified. After doing this, this is what the loss graph looked like:</p><p> </p><figure><img src=\"/blog-media/notion/903bd30ceee06b79.png\" alt=\"\"/><figcaption></figcaption></figure><p>UPDATE: I just realized I was performing operations on <code>g1</code> in the code. This is a mistake since it is initially instantiated to be a 0 tensor.</p><h3>July 16th, 2024</h3><p>Sorry for no frequent updates! </p><p>Since last time, I realized (with guidance from Selena) that I was performing the projection in the wrong place in the VectorAdam algorithm. The step should take place before modifying <code>g1</code> and <code>g2</code> . I realized this after Selena pointed out that it did not make sense to try to perform the projection on the gradient it produces after since that would just negate the point of \u201caccumulating\u201d the difference that projection makes. </p><pre><code># v is gr and n is cur_point. find the projection of v onto the tangent plane of n\nif project:\n    dot_numerator = torch.dot(cur_point, grad)\n    dot_denominator = torch.dot(cur_point, cur_point)\n    proj_v_on_n = (dot_numerator / dot_denominator) * cur_point\n\n    grad = grad - proj_v_on_n\n\ng1.mul_(b1).add_(grad, alpha=1-b1) \nif axis is not None:\n    dim = grad.shape[axis]\n    grad_norm = torch.norm(grad, dim=axis).unsqueeze(axis).repeat_interleave(dim, dim=axis)\n    grad_sq = grad_norm * grad_norm\n    g2.mul_(b2).add_(grad_sq, alpha=1-b2)\nelse:\n    g2.mul_(b2).add_(grad.square(), alpha=1-b2)</code></pre><p>After completing these changes, I immediately saw an improvement in the loss. Here is the loss graph for radius of 1. The left side will be the method using VectorAdam and projection, the right side will be the method using the original VectorAdam with forceful normalization onto the sphere.</p><figure><img src=\"/blog-media/notion/bdc9d163591161c2.png\" alt=\"\"/><figcaption></figcaption></figure><p>Here are some detailed logs on the final position of the points:</p><pre><code>The starting point is tensor([0., 0., 1.], dtype=torch.float64).\nThe two points a and b respectively are tensor([1., 0., 0.]) and tensor([0., 1., 0.])\nThe final position of projected VectorAdam is tensor([0.7071, 0.7071, 0.0007], requires_grad=True), the intended position is tensor([0.7071, 0.7071, 0.0000])\nThe final position of the unnormalized and unproject point is tensor([ 0.6316,  0.6316, -0.4498], requires_grad=True), the intended position is tensor([0.5000, 0.5000, 0.0000])</code></pre><p>It\u2019s very cool to see that the final result of the projected result ends up almost exactly at the correct spot, the unprojected point has some trouble converging.</p><p>Another interesting observation is that upon trying different anchor points for the two points and different starting positions of the initial point, the loss graph almost looks identical. A possible reason is due to the fact the energy function is relatively simply. Since there aren\u2019t <em>many </em>peaks and troughs, it may not be complex enough. </p><p>However, there is a clear improvement in the convergence. </p><p>So now, we should work on benchmarking. I will perform this in 3 distinct graphs:</p><ol><li>Make the radius of the sphere vary and overlay all of the loss lines. Then, show the average of the loss line. <ol><li>To do this without skewing the results, I will divide each of the individual losses by <code>r^2</code> to ensure that the data is normalized.</li></ol></li></ol><ol><li>Graph the gradient vector at each step to show how the points move at each step. <ol><li>Perform this simulation for the projected and unprojected points. </li></ol></li></ol><h3>July 23th, 2024</h3><p>During this week, I mostly worked on benchmarking my work to show that there is a clear improvement. The two things I worked on were the following:</p><ol><li>Graph the gradient vector at each step</li></ol><p>The purpose of this step is to see the general direction that the point takes at each step. For this, I used the <code>ax.quiver</code> functionality to show the vector in 3 dimensions. The way I graphed the vector was storing both the absolute position and the gradient vector. Then, I would show the vector that starts at the previous absolute position and in the direction of the gradient vector.</p><pre><code>prev_vec = position_list[i-1]\nnew_vec = vector_list[i].detach().cpu().numpy()\nax.quiver(prev_vec[0], prev_vec[1], prev_vec[2], new_vec[0], new_vec[1], new_vec[2], color=color, normalize=False)</code></pre><p>Some drawbacks to this method is that I find the gradient vectors are quite large compared to the scale of the sphere. Because of that, I felt like the vectors provide no real value of seeing when the learning rate is considerably large. </p><p>Here is an image to demonstrate a sphere of radius 1 and having a learning process of 5 steps. </p><figure><img src=\"/blog-media/notion/8f70eb694b8014e7.png\" alt=\"\"/><figcaption></figcaption></figure><p>Another thing to note is that after the projection, the point is always normalized onto the sphere. This is what makes the actual point moving on the sphere coherent during the learning process visualization. I think there are a lot of issues with this visualization, I\u2019m hoping there is a way to make this better. </p><ol><li>Graphing the loss at various radiuses</li></ol><p>For this step, I chose to anchor <code>a</code> and <code>b</code> at points <code>(1,0,0)</code> and <code>(0,1,0)</code> respectively. Then, I chose the starting point <code>n</code> to be at <code>(0, 0, 1)</code> for all of the simulations. </p><p>I ran this simulation with 10 different radiuses from 1-10 and then I graphed the loss of each one and computed the average. </p><p>There are some interesting results to see, first here is an image of the graph:</p><figure><img src=\"/blog-media/notion/bd0040bb73c01623.png\" alt=\"The green shows the loss of non projected simulations, the blue is the loss of the projected simulations. The solid lines represent the average loss (of the unprojected and projected separately)\"/><figcaption>The green shows the loss of non projected simulations, the blue is the loss of the projected simulations. The solid lines represent the average loss (of the unprojected and projected separately)</figcaption></figure><p>Something interesting I noticed was that with the unprojected loss, even larger radiuses seem to converge. </p><figure><img src=\"/blog-media/notion/d0cf5c29bbd7c73c.png\" alt=\"\"/><figcaption></figcaption></figure><p>Here you can observe that for a radius of 1, it does not seem to converge. Althought, this may be attributed to a large learning causing oscillation on the gradient.</p><p>Overall, I think I can say that I conclude the projected algorithm seems to converge faster than the unprojected algorithm. We can see that at about 10 steps, the blue line has already reached the minimum loss it can obtain with this energy function whereas the green is still oscillating. </p><p>So, projecting the gradient vector does improve VectorAdam.</p><h3>July 29th, 2024</h3><figure><img src=\"/blog-media/notion/7140c786ce86a472.png\" alt=\"\"/><figcaption></figcaption></figure><figure><img src=\"/blog-media/notion/678b3b581c01edee.png\" alt=\"\"/><figcaption></figcaption></figure><pre><code>m1 = g1 / (1-(b1**state[&quot;step&quot;]))\n\n# project m1 onto grad\ndot_numerator = torch.dot(m1, grad)\ndot_denominator = torch.dot(grad, grad)\nm1 = (dot_numerator / dot_denominator) * m1</code></pre><figure><img src=\"/blog-media/notion/60f73d467df8d75d.png\" alt=\"\"/><figcaption></figcaption></figure><figure><img src=\"/blog-media/notion/9f840e8ec9d8a38a.png\" alt=\"\"/><figcaption></figcaption></figure><p>This figure contains the projection of the momentum as well as the gradient. </p><p><strong>Possible Reasons Why Projecting the Momentum is Better</strong></p><ul><li>accumulating the previous gradients, acting like the \u201cmomentum\u201d of the descent</li></ul><ul><li>perhaps during the start there is a small \u201cspike\u201d because of adding the vectors from the overshooting the point and from the initial start point (different directions basically) then when accumulated it causes that strange spike</li></ul><p><strong>Plan of action on how to prove hypothesis</strong></p><ul><li>check the gradient vector at each step for steps 1-5 (most relevant to the spike) <ul><li>compare the gradient for each (momentum projected vs momentum not projected)</li></ul></li></ul><figure><img src=\"/blog-media/notion/714df8c3d2cc49f5.png\" alt=\"itr 1\"/><figcaption>itr 1</figcaption></figure><figure><img src=\"/blog-media/notion/f56407f5dc22c43c.png\" alt=\"itr 1 (momentum)\"/><figcaption>itr 1 (momentum)</figcaption></figure><figure><img src=\"/blog-media/notion/1ffbc00c824cf3d0.png\" alt=\"itr 2\"/><figcaption>itr 2</figcaption></figure><figure><img src=\"/blog-media/notion/e771828c8dba0276.png\" alt=\"itr 2 (momentum)\"/><figcaption>itr 2 (momentum)</figcaption></figure><figure><img src=\"/blog-media/notion/1f24fb40463e4c4a.png\" alt=\"itr 3\"/><figcaption>itr 3</figcaption></figure><figure><img src=\"/blog-media/notion/1ac0cb5aa92f6947.png\" alt=\"itr 3 (momentum)\"/><figcaption>itr 3 (momentum)</figcaption></figure><figure><img src=\"/blog-media/notion/79dc76683567af63.png\" alt=\"itr 4\"/><figcaption>itr 4</figcaption></figure><figure><img src=\"/blog-media/notion/4039c6d09e0bd14e.png\" alt=\"itr 4 (momentum)\"/><figcaption>itr 4 (momentum)</figcaption></figure><ul><li>noticed that the momentum vector when unprojected points away from the desired spot. Could be an issue because it causes the point to overshoot the desired position. </li></ul><p>from this itr onward, the red point (without momentum projected) will move towards the desired position.</p><p>the corresponding momentum vectors at each itr:</p><h3>Sept 29, 2024</h3><p>So what\u2019s next? What will I be working on after?</p><ul><li>Extending this to more than just spheres, can this be applied to any manifold? </li></ul><ul><li>Can we implement parallel transport with the current momentum vector?</li></ul><ul><li>What applications can we apply this to in order to improve the performance/solve new problems?</li></ul><p>The first step is to read about parallel transport. Embarrassingly, I know nothing about this and I will be reading a series of textbooks to inform myself about the general ideas. The step after that is deciding how to use the analytical formula for parallel transport and how it could apply to a sphere. Then, it would be actually implementing the code. </p><h2>Parallel Transport</h2><p>Sarina Li</p><h3>Problem</h3><p>Based on the new modifications of VectorAdam, the momentum vector can be moved along the sphere using parallel transport due to the momentum being projected completely out for larger learning rates. </p><p>Additionally, can this algorithm be applied to more than just spheres? What about ellipsoids? What about manifolds in general? </p><p>To address these problems, I\u2019ll be documenting my work here </p>",
+  "media": [
+    {
+      "src": "/blog-media/notion/cbfa8cb829daeba1.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/02ea8000750012dd.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/5e4909006e05b714.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/2ab8b35861c3602a.png",
+      "caption": "The loss graph of the point",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/f6fb8e0395d08332.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/c929a39cedc5cf39.png",
+      "caption": "For example, if VectorAdam returns the gradient vector of <code>(0.5,0.5,0.5)</code> and I am currently on point A, I want to project it onto the normal vector of A and then subtract that from the original gradient vector from VectorAdam producing a new vector, pointing A in the direction of B. ",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/7be0506b7b7e9e33.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/903bd30ceee06b79.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/bdc9d163591161c2.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/8f70eb694b8014e7.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/bd0040bb73c01623.png",
+      "caption": "The green shows the loss of non projected simulations, the blue is the loss of the projected simulations. The solid lines represent the average loss (of the unprojected and projected separately)",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/d0cf5c29bbd7c73c.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/7140c786ce86a472.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/678b3b581c01edee.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/60f73d467df8d75d.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/9f840e8ec9d8a38a.png",
+      "caption": "",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/714df8c3d2cc49f5.png",
+      "caption": "itr 1",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/f56407f5dc22c43c.png",
+      "caption": "itr 1 (momentum)",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/1ffbc00c824cf3d0.png",
+      "caption": "itr 2",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/e771828c8dba0276.png",
+      "caption": "itr 2 (momentum)",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/1f24fb40463e4c4a.png",
+      "caption": "itr 3",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/1ac0cb5aa92f6947.png",
+      "caption": "itr 3 (momentum)",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/79dc76683567af63.png",
+      "caption": "itr 4",
+      "type": "image"
+    },
+    {
+      "src": "/blog-media/notion/4039c6d09e0bd14e.png",
+      "caption": "itr 4 (momentum)",
+      "type": "image"
+    }
+  ]
+}
